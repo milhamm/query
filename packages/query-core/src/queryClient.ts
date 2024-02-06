@@ -165,14 +165,6 @@ export class QueryClient {
     >,
     options?: SetDataOptions,
   ): TInferredQueryFnData | undefined {
-    const query = this.#queryCache.find<TInferredQueryFnData>({ queryKey })
-    const prevData = query?.state.data
-    const data = functionalUpdate(updater, prevData)
-
-    if (typeof data === 'undefined') {
-      return undefined
-    }
-
     const defaultedOptions = this.defaultQueryOptions<
       any,
       any,
@@ -180,6 +172,16 @@ export class QueryClient {
       any,
       QueryKey
     >({ queryKey })
+
+    const query = this.#queryCache.get<TInferredQueryFnData>(
+      defaultedOptions.queryHash,
+    )
+    const prevData = query?.state.data
+    const data = functionalUpdate(updater, prevData)
+
+    if (typeof data === 'undefined') {
+      return undefined
+    }
 
     return this.#queryCache
       .build(this, defaultedOptions)
