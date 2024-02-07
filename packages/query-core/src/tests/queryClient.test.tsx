@@ -356,6 +356,20 @@ describe('queryClient', () => {
         }),
       )
     })
+
+    test('should set 10k data in less than 1000ms', () => {
+      const key = queryKey()
+      const start = performance.now()
+      const totalRun = 10_000
+
+      for (let i = 0; i <= totalRun; i++) {
+        queryClient.setQueryData([...key, i], i)
+      }
+
+      const end = performance.now()
+      expect(queryClient.getQueryData([...key, totalRun])).toBe(totalRun)
+      expect(end - start).toBeLessThan(1000)
+    })
   })
 
   describe('setQueriesData', () => {
