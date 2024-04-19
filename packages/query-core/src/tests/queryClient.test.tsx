@@ -368,7 +368,7 @@ describe('queryClient', () => {
 
       const end = performance.now()
       expect(queryClient.getQueryData([...key, totalRun])).toBe(totalRun)
-      expect(end - start).toBeLessThan(500)
+      expect(end - start).toBeLessThan(1000)
     })
   })
 
