@@ -357,7 +357,7 @@ describe('queryClient', () => {
       )
     })
 
-    test('should set 10k data in less than 1000ms', () => {
+    test.only('should set 10k data in less than 500ms', () => {
       const key = queryKey()
       const start = performance.now()
       const totalRun = 10_000
@@ -368,7 +368,7 @@ describe('queryClient', () => {
 
       const end = performance.now()
       expect(queryClient.getQueryData([...key, totalRun])).toBe(totalRun)
-      expect(end - start).toBeLessThan(1000)
+      expect(end - start).toBeLessThan(500)
     })
   })
 
